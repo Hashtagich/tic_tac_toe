@@ -3,7 +3,7 @@ from time import sleep
 
 # Переменные
 cell = "_"
-game_field = None  # игровое поле (матрица)
+game_field = tuple()  # игровое поле (матрица)
 cross_zero = ('X', '0')
 answer_yes_tuple = ('yes', 'y', 'да', '+', 'конечно')
 answer_no_tuple = ('no', 'n', 'не', 'нет', '-', 'exit')
