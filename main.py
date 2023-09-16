@@ -3,10 +3,10 @@ from time import sleep
 
 # Переменные
 cell = "_"
-game_field = [[cell for _ in range(3)] for _ in range(3)]  # игровое поле (матрица)
+game_field = None  # игровое поле (матрица)
 cross_zero = ('X', '0')
-answer_yes_tuple = ('yes', 'y', 'да', 'конечно')
-answer_no_tuple = ('no', 'n', 'нет', 'exit')
+answer_yes_tuple = ('yes', 'y', 'да', '+', 'конечно')
+answer_no_tuple = ('no', 'n', 'не', 'нет', '-', 'exit')
 db_end = {
     "X": "Победил игрок №1!",
     "0": "Победил игрок №2!",
@@ -47,7 +47,6 @@ def free_cell(*args) -> bool:
 
 def end_game(symbol: str) -> str:
     """Функция проверяет, закончилась ли игра или нет."""
-
     if not any(map(lambda x: cell in x, game_field)):
         result = cell
     elif game_field[0][0] == game_field[0][1] == game_field[0][2] == symbol or \
@@ -95,7 +94,7 @@ def next_move(symbol: str) -> None:
 
 def game(ind: (int, bool)) -> None:
     """Функция для непосредственного движка игры т.е. поочерёдный ход игроков и запуск проверки завершения игры
-    через каждый ход. На входе получаем целое число 0 или 1, что подразумевает под собой игрока №1 или №2.
+    через каждый ход. На входе получаем целое число 0 или 1 (True or False), что подразумевает под собой игрока №1 or 2.
     Также происходит очистка консоли перед каждым ходом через функцию clear_console.
     По завершении игры, предлагается сыграть ещё одну чтобы не перезапускать программу."""
 
@@ -109,16 +108,18 @@ def game(ind: (int, bool)) -> None:
         print_field()
         print(db_end[the_end])
 
-        while True:
+        flag = True
+        while flag:
             print()
-            answer = input('Желаете сыграть ещё одну игру? Y\\N\n')
+            answer = input('Желаете сыграть ещё одну игру? Y\\N\n').lower()
 
-            if answer.lower() in answer_yes_tuple:
+            if answer in answer_yes_tuple:
+                flag = False
                 new_game()
-            elif answer.lower() in answer_no_tuple:
+            elif answer in answer_no_tuple:
                 print('Всего хорошего!')
-                sleep(2)
-                break
+                sleep(1)
+                flag = False
             else:
                 print('Некорректный ввод. Повторите ввод.')
                 continue
